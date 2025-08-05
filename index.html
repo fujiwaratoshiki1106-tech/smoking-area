@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>博多駅近くの喫煙可能店一覧</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>博多駅近くの喫煙可能なお店一覧</h1>
+
+  <div class="filters">
+    <select id="category-filter">
+      <option value="">カテゴリを選択</option>
+      <option value="カフェ">カフェ</option>
+      <option value="喫茶店">喫茶店</option>
+      <option value="居酒屋">居酒屋</option>
+    </select>
+    <select id="smoking-filter">
+      <option value="">喫煙形態を選択</option>
+      <option value="全席喫煙可">全席喫煙可</option>
+      <option value="分煙">分煙</option>
+      <option value="喫煙ブースあり">喫煙ブースあり</option>
+    </select>
+  </div>
+
+  <div class="store-list" id="store-list">
+    <!-- JSで店舗データを挿入 -->
+  </div>
+
+  <script>
+    let stores = [];
+
+    async function fetchStoresFromCSV() {
+      const response = await fetch('stores.csv');
+      const text = await response.text();
+      const rows = text.trim().split('\n').map(row => row.split(','));
+      const headers = rows[0];
+      const data = rows.slice(1).map(row => {
+        let obj = {};
+        headers.forEach((key, i) => obj[key.trim()] = row[i].trim());
+        return obj;
+      });
+      stores = data;
+      renderStores();
+    }
+
+    function getSmokingIcon(type) {
+      switch (type) {
+        case "全席喫煙可": return "🚬";
+        case "分煙": return "🚷";
+        case "喫煙ブースあり": return "🚪💨";
+        default: return "❓";
+      }
+    }
+
+    const storeList = document.getElementById("store-list");
+    const categoryFilter = document.getElementById("category-filter");
+    const smokingFilter = document.getElementById("smoking-filter");
+
+    function renderStores() {
+      const category = categoryFilter.value;
+      const smoking = smokingFilter.value;
+      const filtered = stores.filter(store => {
+        return (!category || store.category === category) &&
+               (!smoking || store.smoking === smoking);
+      });
+
+      storeList.innerHTML = "";
+      filtered.forEach(store => {
+        const card = document.createElement("div");
+        card.className = "store-card";
+        card.innerHTML = `
+          <h3>${store.name}<span class="smoking-icon">${getSmokingIcon(store.smoking)}</span></h3>
+          <p>カテゴリ：${store.category}</p>
+          <p>喫煙形態：${store.smoking}</p>
+          <p>住所：${store.address}</p>
+          <p><a href="${store.mapUrl}" target="_blank">Google Mapで見る</a></p>
+        `;
+        storeList.appendChild(card);
+      });
+    }
+
+    categoryFilter.addEventListener("change", renderStores);
+    smokingFilter.addEventListener("change", renderStores);
+
+    fetchStoresFromCSV();
+  </script>
+</body>
+</html>
