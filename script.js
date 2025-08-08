@@ -1,8 +1,8 @@
-// script.js —— バッジ表示 + 営業中判定 + CSV読込（軽量パーサ付き）
+// script.js —— CSV読込 + バッジ表示 + 営業中判定 + 喫煙種別ラベル（紙OK/分煙/喫煙室）
 
 let stores = [];
 
-// --- 軽量CSVパーサ（ダブルクオート対応、改行/カンマを適切に処理）---
+/* ========= 軽量CSVパーサ（ダブルクオート対応） ========= */
 function parseCSV(text) {
   const rows = [];
   let row = [], cell = '';
@@ -12,36 +12,22 @@ function parseCSV(text) {
     const ch = text[i], next = text[i + 1];
 
     if (inQuotes) {
-      if (ch === '"' && next === '"') { // 連続ダブルクオートはエスケープ
-        cell += '"'; i++;
-      } else if (ch === '"') {
-        inQuotes = false;
-      } else {
-        cell += ch;
-      }
+      if (ch === '"' && next === '"') { cell += '"'; i++; }
+      else if (ch === '"') { inQuotes = false; }
+      else { cell += ch; }
     } else {
-      if (ch === '"') {
-        inQuotes = true;
-      } else if (ch === ',') {
-        row.push(cell.trim()); cell = '';
-      } else if (ch === '\n') {
-        row.push(cell.trim()); rows.push(row); row = []; cell = '';
-      } else if (ch === '\r') {
-        // ignore
-      } else {
-        cell += ch;
-      }
+      if (ch === '"') inQuotes = true;
+      else if (ch === ',') { row.push(cell.trim()); cell = ''; }
+      else if (ch === '\n') { row.push(cell.trim()); rows.push(row); row = []; cell = ''; }
+      else if (ch === '\r') { /* skip */ }
+      else { cell += ch; }
     }
   }
-  // 最終セル
-  if (cell.length || row.length) {
-    row.push(cell.trim());
-    rows.push(row);
-  }
+  if (cell.length || row.length) { row.push(cell.trim()); rows.push(row); }
   return rows.filter(r => r.length && r.some(c => c !== ''));
 }
 
-// --- CSVを取得してオブジェクト配列へ ---
+/* ========= CSV取得 → オブジェクト配列 ========= */
 async function fetchStoresFromCSV() {
   try {
     const resp = await fetch(`stores.csv?ts=${Date.now()}`); // キャッシュ回避
@@ -69,19 +55,18 @@ async function fetchStoresFromCSV() {
   }
 }
 
-// 置き換え：アイコン関数 → テキスト関数
+/* ========= 喫煙種別 → テキストラベル ========= */
 function getSmokingLabel(type) {
   switch (type) {
-    case "全席喫煙可":     return "紙OK";
-    case "分煙":           return "分煙";
-    case "喫煙ブースあり": return "喫煙室";
-    default:               return "-";
+    case '全席喫煙可':     return '紙OK';
+    case '分煙':           return '分煙';
+    case '喫煙ブースあり': return '喫煙室';
+    default:               return '-';
   }
 }
 
-
-// 営業中判定（ざっくり）
-// 例: "7:00-21:00" / "平日7:00-21:00;土日9:00-18:00" / "10:00-翌2:00"
+/* ========= 営業中判定（ざっくり/JST） =========
+   例: "7:00-21:00" / "平日7:00-21:00;土日9:00-18:00" / "10:00-翌2:00" */
 function isOpenNow(openHoursRaw) {
   if (!openHoursRaw) return false;
 
@@ -97,8 +82,7 @@ function isOpenNow(openHoursRaw) {
     if (/土日/.test(b)) return day === 0 || day === 6;
     if (/土/.test(b) && !/土日/.test(b)) return day === 6;
     if (/日/.test(b) && !/土日/.test(b)) return day === 0;
-    // 曜日指定なしは常に候補
-    return !/[月火水木金土日]/.test(b);
+    return !/[月火水木金土日]/.test(b); // 曜日指定なしは常に候補
   });
 
   const target = pick.length ? pick : blocks;
@@ -109,17 +93,19 @@ function isOpenNow(openHoursRaw) {
     if (!m) return null;
     const s = parseInt(m[1], 10) * 60 + parseInt(m[2] || '0', 10);
     let e = parseInt(m[4], 10) * 60 + parseInt(m[5] || '0', 10);
-    const crosses = !!m[3] || e < s; // 翌 or 終了時刻が開始より小さい
+    const crosses = !!m[3] || e < s; // 翌 or 数値上で終了<開始
     return { s, e, crosses };
   }).filter(Boolean);
 
   return ranges.some(({ s, e, crosses }) => (crosses ? hm >= s || hm <= e : hm >= s && hm <= e));
 }
 
+/* ========= DOM参照 ========= */
 const storeList      = document.getElementById('store-list');
 const categoryFilter = document.getElementById('category-filter');
 const smokingFilter  = document.getElementById('smoking-filter');
 
+/* ========= 描画 ========= */
 function renderStores() {
   const category = categoryFilter?.value || '';
   const smoking  = smokingFilter?.value  || '';
@@ -130,7 +116,6 @@ function renderStores() {
   );
 
   if (!storeList) return;
-
   storeList.innerHTML = '';
 
   if (!filtered.length) {
@@ -158,7 +143,8 @@ function renderStores() {
     card.className = 'store-card fade-in';
     card.style.animationDelay = `${i * 50}ms`;
     card.innerHTML = `
-      <h3>${st.name || '-'}<span class="smoking-icon">${getSmokingIcon(st.smoking)}</span></h3>
+      <h3>${st.name || '-'}</h3>
+      <span class="smoking-label">${getSmokingLabel(st.smoking)}</span>
       ${badgesHtml}
       <p>カテゴリ：${st.category || '-'}</p>
       <p>喫煙形態：${st.smoking || '-'}</p>
@@ -169,9 +155,7 @@ function renderStores() {
   });
 }
 
-// フィルタ操作で即再描画
+/* ========= イベント & 起動 ========= */
 categoryFilter?.addEventListener('change', renderStores);
 smokingFilter?.addEventListener('change', renderStores);
-
-// 起動
 fetchStoresFromCSV();
