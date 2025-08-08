@@ -1,11 +1,11 @@
-name,category,smoking,address,mapUrl
-Cafe バンカム,喫茶店,全席喫煙可,福岡市博多区博多駅中央街2-1,https://www.google.com/maps/search/?api=1&query=福岡市博多区博多駅中央街2-1
-上島珈琲店 アミュエスト店,カフェ,分煙,福岡市博多区博多駅中央街1-1,https://www.google.com/maps/search/?api=1&query=福岡市博多区博多駅中央街1-1
-コメダ珈琲店 博多駅東店,カフェ,分煙,福岡市博多区博多駅東2-10,https://www.google.com/maps/search/?api=1&query=福岡市博多区博多駅東2-10
-ポエジー珈琲館,喫茶店,全席喫煙可,福岡市博多区祇園町（博多駅近辺）,https://www.google.com/maps/search/?api=1&query=ポエジー珈琲館+博多
-シアトルズ・ベスト・コーヒー 博多筑紫口店,カフェ,分煙,福岡市博多区博多駅東2-3 NTTビル東館1F,https://www.google.com/maps/search/?api=1&query=博多駅東2-3
-PRONTO 博多駅地下街店,カフェ,喫煙ブースあり,福岡市博多区博多駅中央街1-1（地下街）,https://www.google.com/maps/search/?api=1&query=PRONTO+博多駅地下街店
-鳥ZEN亭 博多筑紫口店,居酒屋,分煙,福岡市博多区博多駅筑紫口付近,https://www.google.com/maps/search/?api=1&query=鳥ZEN亭+博多駅筑紫口店
-酒場 伸輔 博多筑紫口店,居酒屋,全席喫煙可,福岡市博多区博多駅筑紫口,https://www.google.com/maps/search/?api=1&query=酒場+伸輔+博多駅筑紫口店
-楽蔵‑RAKUZO‑ 博多筑紫口店,居酒屋,全席喫煙可,福岡市博多区博多駅筑紫口,https://www.google.com/maps/search/?api=1&query=楽蔵+博多筑紫口店
-磯っこ商店 博多店,居酒屋,全席喫煙可,福岡市博多区博多駅東（筑紫口徒歩3分）,https://www.google.com/maps/search/?api=1&query=磯っこ商店+博多
+name,category,smoking,address,mapUrl,priceRange,openHours,closedDays,seats,powerOutlets,wifi,notes,lat,lng,lastVerified
+Cafe バンカム,喫茶店,全席喫煙可,福岡市博多区博多駅中央街2-1,https://www.google.com/maps/search/?api=1&query=福岡市博多区博多駅中央街2-1,¥,7:00-21:00,不定休,40,yes,no,交通センターB1F,,,"2025-08-08"
+上島珈琲店 アミュエスト店,カフェ,分煙,福岡市博多区博多駅中央街1-1,https://www.google.com/maps/search/?api=1&query=福岡市博多区博多駅中央街1-1,¥,8:00-21:00,施設に準ずる,50,yes,yes,喫煙席あり（紙巻き可）,,,"2025-08-08"
+コメダ珈琲店 博多駅東店,カフェ,分煙,福岡市博多区博多駅東2-10,https://www.google.com/maps/search/?api=1&query=福岡市博多区博多駅東2-10,¥¥,7:00-23:00,なし,90,yes,yes,朝食人気,,,"2025-08-08"
+PRONTO 博多駅地下街店,カフェ,喫煙ブースあり,福岡市博多区博多駅中央街1-1（地下街）,https://www.google.com/maps/search/?api=1&query=PRONTO%20博多駅地下街店,¥,7:00-22:30,施設に準ずる,100,yes,yes,紙巻き可ブース,,,"2025-08-08"
+PRONTO 新幹線博多駅店,カフェ,喫煙ブースあり,福岡市博多区博多駅中央街1-1（新幹線口）,https://www.google.com/maps/search/?api=1&query=PRONTO%20新幹線博多駅店,¥,7:00-21:30,施設に準ずる,80,yes,yes,乗換え前後に便利,,,"2025-08-08"
+シアトルズベストコーヒー 博多筑紫口,カフェ,分煙,福岡市博多区博多駅東2-3 NTTビル東館1F,https://www.google.com/maps/search/?api=1&query=福岡市博多区博多駅東2-3,¥,8:00-20:00,日,60,no,yes,テラス喫煙可,,,"2025-08-08"
+カフェ・ベローチェ 博多駅筑紫口店,カフェ,喫煙ブースあり,福岡市博多区博多駅東1-12-6 花村ビル1F,https://www.google.com/maps/search/?api=1&query=福岡市博多区博多駅東1-12-6,¥,7:00-22:00,なし,70,yes,yes,駅近,,,"2025-08-08"
+鳥ZEN亭 博多駅筑紫口店,居酒屋,分煙,福岡市博多区博多駅中央街,https://www.google.com/maps/search/?api=1&query=鳥ZEN亭%20博多駅筑紫口店,¥¥,17:00-24:00,不定休,80,no,no,席分煙あり,,,"2025-08-08"
+酒場 伸輔 博多駅筑紫口店,居酒屋,全席喫煙可,福岡市博多区博多駅筑紫口,https://www.google.com/maps/search/?api=1&query=酒場%20伸輔%20博多駅筑紫口店,¥,16:00-24:00,不定休,60,no,no,全席喫煙可,,,"2025-08-08"
+楽蔵 RAKUZO 博多筑紫口店,居酒屋,全席喫煙可,福岡市博多区博多駅筑紫口,https://www.google.com/maps/search/?api=1&query=楽蔵%20博多筑紫口店,¥¥,17:00-23:30,不定休,120,no,yes,全席個室,,,"2025-08-08"
