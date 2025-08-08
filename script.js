@@ -69,14 +69,16 @@ async function fetchStoresFromCSV() {
   }
 }
 
-function getSmokingIcon(type) {
+// 置き換え：アイコン関数 → テキスト関数
+function getSmokingLabel(type) {
   switch (type) {
-    case '全席喫煙可':     return '🚬';
-    case '分煙':           return '🚷';
-    case '喫煙ブースあり': return '🚪💨';
-    default:               return '❓';
+    case "全席喫煙可":     return "紙OK";
+    case "分煙":           return "分煙";
+    case "喫煙ブースあり": return "喫煙室";
+    default:               return "-";
   }
 }
+
 
 // 営業中判定（ざっくり）
 // 例: "7:00-21:00" / "平日7:00-21:00;土日9:00-18:00" / "10:00-翌2:00"
